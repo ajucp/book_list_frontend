@@ -1,23 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import BookList from './components/BookList';
+import AddBook from './components/AddBook';
+import axios from 'axios';
+import './index.css';
 
 function App() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  // Fetch books from the API
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/books');
+      setBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
+
+  // Handle adding a new book and update the books state
+  const handleAddBook = async (newBook) => {
+    try {
+      // Post to backend
+      await axios.post('http://localhost:5000/api/books', newBook);
+      
+      // Refresh the book list after successful addition
+      fetchBooks();
+    } catch (error) {
+      console.error("Error adding book:", error);
+    }
+  };
+
+  // Handle deleting a book
+  const handleDeleteBook = async (bookId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/books/${bookId}`);
+      setBooks(books.filter((book) => book._id !== bookId));
+    } catch (error) {
+      console.error("Error deleting book:", error);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="max-w-lg mx-auto p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">Book Listing</h1>
+      <AddBook onAdd={handleAddBook} />
+      <BookList books={books} onDelete={handleDeleteBook} />
     </div>
   );
 }
