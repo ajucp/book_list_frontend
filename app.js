@@ -10,9 +10,9 @@ dotenv.config();
 const app = express();
 // console.log('hai')
 app.use(cors());
-app.get('/', (req, res) => {
-    res.send('Welcome to the Book Listing App!');
-  });
+// app.get('/', (req, res) => {
+//     res.send('Welcome to the Book Listing App!');
+//   });
 
 app.use(bodyParser.json());
 app.use('/api', bookRoutes);  // All book routes prefixed with /api
