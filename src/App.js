@@ -14,7 +14,7 @@ function App() {
   // Fetch books from the API
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get('https://book-list-app-zmue.onrender.com/api/books');
       setBooks(response.data);
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -25,7 +25,7 @@ function App() {
   const handleAddBook = async (newBook) => {
     try {
       // Post to backend
-      await axios.post('http://localhost:5000/api/books', newBook);
+      await axios.post('https://book-list-app-zmue.onrender.com/api/books', newBook);
       
       // Refresh the book list after successful addition
       fetchBooks();
@@ -37,7 +37,7 @@ function App() {
   // Handle deleting a book
   const handleDeleteBook = async (bookId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/books/${bookId}`);
+      await axios.delete(`https://book-list-app-zmue.onrender.com/api/books/${bookId}`);
       setBooks(books.filter((book) => book._id !== bookId));
     } catch (error) {
       console.error("Error deleting book:", error);
